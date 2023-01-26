@@ -16,6 +16,12 @@ import {API_KEY, env} from './config/properties';
 import './../i18n.config';
 import {useTranslation} from 'react-i18next';
 
+interface regionType {
+  name: string;
+  country: string;
+  lat: number;
+  lon: number;
+}
 interface weatherType {
   weather: {
     description: string;
@@ -38,6 +44,7 @@ interface weatherType {
     sunset: string;
   };
 }
+export interface resultType extends weatherType, regionType {}
 
 const getWeatherFromApi = async (
   signal: AbortSignal,
@@ -78,18 +85,11 @@ const getWeatherFromApi = async (
   };
 };
 
-interface coordinatesResultType {
-  name: string;
-  country: string;
-  lat: number;
-  lon: number;
-}
-
 const getCoordinatesFromApi = async (
   signal: AbortSignal,
   t: Function,
   region: string,
-): Promise<coordinatesResultType> => {
+): Promise<regionType> => {
   const data: any = await fetch(
     `https://api.openweathermap.org/geo/1.0/direct?q=${region}&limit=1&appid=${API_KEY}`,
     {signal},
@@ -104,11 +104,11 @@ const getCoordinatesFromApi = async (
   };
 };
 
-type Region = PropsWithChildren<{
+function Region({
+  data,
+}: PropsWithChildren<{
   data: resultType;
-}>;
-
-function Region({data}: Region): JSX.Element {
+}>): JSX.Element {
   const navigation = useNavigation();
 
   const action = () => {
@@ -178,32 +178,6 @@ const cities = [
   'Praga',
   'Viena',
 ];
-export interface resultType {
-  name: string;
-  country: string;
-  lat: number;
-  lon: number;
-  weather: {
-    description: string;
-    icon: string;
-  };
-  main: {
-    temp: number;
-    feels_like: number;
-    temp_min: number;
-    temp_max: number;
-    pressure: number;
-    humidity: number;
-  };
-  wind: {
-    speed: number;
-    deg: number;
-  };
-  sys: {
-    sunrise: string;
-    sunset: string;
-  };
-}
 
 export default function List(): JSX.Element {
   const {t} = useTranslation();
