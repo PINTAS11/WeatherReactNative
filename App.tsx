@@ -9,6 +9,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import List from './src/List';
 import Details from './src/Details';
+import {env} from './src/config/properties';
 
 import './i18n.config';
 import {useTranslation} from 'react-i18next';
@@ -33,14 +34,14 @@ function App(): JSX.Element {
           <Stack.Screen
             name={'List'}
             options={{
-              title: t('list') as string,
+              title: `${t('list')} - ${env.name}`,
             }}
             component={List}
           />
           <Stack.Screen
             name="Details"
             options={{
-              title: t('details') as string,
+              title: `${t('details')} - ${env.name}`,
             }}
             component={Details}
           />

@@ -11,7 +11,7 @@ import {
 
 import {useNavigation} from '@react-navigation/native';
 
-import {API_KEY} from './../properties';
+import {API_KEY, env} from './config/properties';
 
 import './../i18n.config';
 import {useTranslation} from 'react-i18next';
