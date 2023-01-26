@@ -16,7 +16,8 @@
     "run:android:release": "npm run set:env:release && npm run android --variant release",
     "run:ios:debug": "npm run set:env:debug && npm run ios --configuration Debug",
     "run:ios:staging": "npm run set:env:staging && npm run ios --configuration Staging",
-    "run:ios:release": "npm run set:env:release && npm run ios --configuration Release"
+    "run:ios:release": "npm run set:env:release && npm run ios --configuration Release",
+    "run:debug": "npm run run:ios:debug && npm run run:android:debug"
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.2",

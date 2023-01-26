@@ -40,12 +40,14 @@ interface weatherType {
 }
 
 const getWeatherFromApi = async (
+  signal: AbortSignal,
   t: Function,
   lat: number,
   lon: number,
 ): Promise<weatherType> => {
   var data = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${lon}&appid=${API_KEY}`,
+    {signal},
   ).then(response => response.json());
 
   return {
@@ -84,11 +86,13 @@ interface coordinatesResultType {
 }
 
 const getCoordinatesFromApi = async (
+  signal: AbortSignal,
   t: Function,
   region: string,
 ): Promise<coordinatesResultType> => {
   const data: any = await fetch(
     `https://api.openweathermap.org/geo/1.0/direct?q=${region}&limit=1&appid=${API_KEY}`,
+    {signal},
   ).then(response => response.json());
 
   const json = data[0];
@@ -205,10 +209,11 @@ export default function List(): JSX.Element {
   const {t} = useTranslation();
   const [results, setResults] = React.useState<resultType[]>([]);
 
-  const fetchData = async (city: string) => {
+  const fetchData = async (signal: AbortSignal, city: string) => {
     try {
-      var coordinates = await getCoordinatesFromApi(t, city);
+      var coordinates = await getCoordinatesFromApi(signal, t, city);
       var weather = await getWeatherFromApi(
+        signal,
         t,
         coordinates.lat,
         coordinates.lon,
@@ -221,20 +226,24 @@ export default function List(): JSX.Element {
   };
 
   React.useEffect(() => {
-    //todo cancel fetch request on the return of the use effect
-    cities.forEach(city => fetchData(city));
+    const controller = new AbortController();
+    const {signal} = controller;
+    cities.forEach(city => fetchData(signal, city));
     return () => {
+      controller.abort();
       setResults([]);
     };
   }, []);
 
   return (
-    <FlatList
-      data={results}
-      ItemSeparatorComponent={() => <View style={{height: 20}} />}
-      renderItem={({item}) => <Region data={item} />}
-      keyExtractor={item => item.name}
-    />
+    <React.StrictMode>
+      <FlatList
+        data={results}
+        ItemSeparatorComponent={() => <View style={{height: 20}} />}
+        renderItem={({item}) => <Region data={item} />}
+        keyExtractor={item => item.name}
+      />
+    </React.StrictMode>
   );
 }
 

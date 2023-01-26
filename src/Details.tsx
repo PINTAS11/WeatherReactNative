@@ -16,91 +16,95 @@ export default function Details(): JSX.Element {
   const {data} = useRoute<RouteProp<ParamList, 'Detail'>>().params;
 
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.main}>
-      <View style={styles.mainInfo}>
-        <View style={styles.sectionTempLocalContainer}>
-          <Text style={texts.temperature}>{data.main.temp}º</Text>
-          <Text style={texts.local}>
-            {data.name}
+    <React.StrictMode>
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={styles.main}>
+        <View style={styles.mainInfo}>
+          <View style={styles.sectionTempLocalContainer}>
+            <Text style={texts.temperature}>{data.main.temp}º</Text>
+            <Text style={texts.local}>
+              {data.name}
+              <Image
+                style={{
+                  width: 15,
+                  height: 15,
+                }}
+                source={require('./../assets/local.png')}
+              />
+            </Text>
+          </View>
+          <View style={styles.sectionIconContainer}>
             <Image
               style={{
-                width: 15,
-                height: 15,
+                width: 100,
+                height: 100,
               }}
-              source={require('./../assets/local.png')}
+              source={{
+                uri: data.weather.icon,
+              }}
             />
+            <Text style={texts.description}>{data.weather.description}</Text>
+          </View>
+        </View>
+        <View style={[styles.infoTempContainer]}>
+          <Text style={texts.infoTemp}>
+            {data.main.temp_max}º / {data.main.temp_min}º {t('feels_like')}{' '}
+            {data.main.feels_like}º
           </Text>
         </View>
-        <View style={styles.sectionIconContainer}>
-          <Image
-            style={{
-              width: 100,
-              height: 100,
-            }}
-            source={{
-              uri: data.weather.icon,
-            }}
-          />
-          <Text style={texts.description}>{data.weather.description}</Text>
+        <View style={styles.cardContainer}>
+          <View style={styles.cardSection}>
+            <Text style={texts.cardNormal}>{t('sunrise')}</Text>
+            <Text style={texts.cardBold}>{data.sys.sunrise}</Text>
+            <Image
+              style={{
+                width: 70,
+                height: 70,
+              }}
+              source={require('./../assets/sunrise.png')}
+            />
+          </View>
+          <View style={styles.cardSection}>
+            <Text style={texts.cardNormal}>{t('sunset')}</Text>
+            <Text style={texts.cardBold}>{data.sys.sunset}</Text>
+            <Image
+              style={{
+                width: 70,
+                height: 70,
+              }}
+              source={require('./../assets/sunset.png')}
+            />
+          </View>
         </View>
-      </View>
-      <View style={[styles.infoTempContainer]}>
-        <Text style={texts.infoTemp}>
-          {data.main.temp_max}º / {data.main.temp_min}º {t('feels_like')}{' '}
-          {data.main.feels_like}º
-        </Text>
-      </View>
-      <View style={styles.cardContainer}>
-        <View style={styles.cardSection}>
-          <Text style={texts.cardNormal}>{t('sunrise')}</Text>
-          <Text style={texts.cardBold}>{data.sys.sunrise}</Text>
-          <Image
-            style={{
-              width: 70,
-              height: 70,
-            }}
-            source={require('./../assets/sunrise.png')}
-          />
-        </View>
-        <View style={styles.cardSection}>
-          <Text style={texts.cardNormal}>{t('sunset')}</Text>
-          <Text style={texts.cardBold}>{data.sys.sunset}</Text>
-          <Image
-            style={{
-              width: 70,
-              height: 70,
-            }}
-            source={require('./../assets/sunset.png')}
-          />
-        </View>
-      </View>
-      <View style={styles.cardContainer}>
-        <View style={styles.cardSection}>
-          <Image
-            style={{
-              width: 50,
-              height: 50,
-            }}
-            source={require('./../assets/humidity.png')}
-          />
-          <Text style={texts.cardBold}>{t('humidity')}</Text>
-          <Text style={texts.cardOpaque}>{data.main.humidity}%</Text>
-        </View>
-        <View style={styles.cardSection}>
+        <View style={styles.cardContainer}>
           <View style={styles.cardSection}>
             <Image
               style={{
                 width: 50,
                 height: 50,
               }}
-              source={require('./../assets/wind.png')}
+              source={require('./../assets/humidity.png')}
             />
-            <Text style={texts.cardBold}>{t('wind')}</Text>
-            <Text style={texts.cardOpaque}>{data.wind.speed} km/h</Text>
+            <Text style={texts.cardBold}>{t('humidity')}</Text>
+            <Text style={texts.cardOpaque}>{data.main.humidity}%</Text>
+          </View>
+          <View style={styles.cardSection}>
+            <View style={styles.cardSection}>
+              <Image
+                style={{
+                  width: 50,
+                  height: 50,
+                }}
+                source={require('./../assets/wind.png')}
+              />
+              <Text style={texts.cardBold}>{t('wind')}</Text>
+              <Text style={texts.cardOpaque}>{data.wind.speed} km/h</Text>
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </React.StrictMode>
   );
 }
 
