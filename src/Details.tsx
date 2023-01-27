@@ -2,7 +2,6 @@ import * as React from 'react';
 import {ScrollView, View, Text, StyleSheet, Image} from 'react-native';
 import {useRoute, RouteProp} from '@react-navigation/native';
 import {resultType} from './List';
-import './../i18n.config';
 import {useTranslation} from 'react-i18next';
 
 type ParamList = {

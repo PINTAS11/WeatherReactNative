@@ -13,7 +13,6 @@ import {useNavigation} from '@react-navigation/native';
 
 import {API_KEY, env} from './config/properties';
 
-import './../i18n.config';
 import {useTranslation} from 'react-i18next';
 
 interface regionType {
@@ -167,6 +166,7 @@ function Region({
 }
 
 const cities = [
+  'Coimbra',
   'Lisboa',
   'Madrid',
   'Paris',
